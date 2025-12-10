@@ -1,22 +1,26 @@
-import "./globals.css"
-import { ClerkProvider } from "@clerk/nextjs"
-import { ConvexsProviderWithClerk } from "./ConvexProviderWithClerk"
-import { AuthProvider } from "../lib/AuthContext"
-import type { Metadata } from "next"
-import { Montserrat } from "next/font/google"
+import "./globals.css";
+import type { Metadata } from "next";
+import { Montserrat } from "next/font/google";
+import { ClerkProvider } from '@clerk/nextjs';
+import { ConvexsProviderWithClerk } from './ConvexProviderWithClerk';
+import { AuthProvider } from '../lib/AuthContext';
 
 const montserrat = Montserrat({
   weight: ["400", "500", "600", "700"],
   variable: "--font-montserrat",
   subsets: ["latin"],
-})
+});
 
 export const metadata: Metadata = {
-  title: "Tour Builder Dashboard",
-  description: "Create and manage interactive onboarding tours",
-}
+  title: 'Tour Builder Dashboard',
+  description: 'Create and manage interactive onboarding tours',
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <ClerkProvider>
       <ConvexsProviderWithClerk>
@@ -29,5 +33,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </AuthProvider>
       </ConvexsProviderWithClerk>
     </ClerkProvider>
-  )
+  );
 }
