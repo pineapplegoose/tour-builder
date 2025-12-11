@@ -12,7 +12,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: 'Tour Builder Dashboard',
+  title: 'Jagora',
   description: 'Create and manage interactive onboarding tours',
 };
 
