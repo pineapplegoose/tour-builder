@@ -6,7 +6,7 @@ const Documentation = () => {
     return (
         <>
             <Navbar />
-            <div className='md:p-12 p-6 '>
+            <div className='md:p-12 text-gray-900 p-6 '>
                 <div>
 
                     <h2 className='md:text-2xl text-xl pb-6 font-bold hover:underline leading-10' >📚 Jagora Documentation: The Guide to Seamless Onboarding</h2>
