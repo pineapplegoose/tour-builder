@@ -1,9 +1,36 @@
+"use client";
+
+// import Particles, { initParticlesEngine } from "@tsparticles/react";
+
 import { Si99designs, SiActiveloop, SiActivision, SiAffine, SiAgora, SiBower, SiBoxysvg, SiBrave, SiBrenntag, SiBruno } from '@icons-pack/react-simple-icons'
 
 import Marquee from "react-fast-marquee";
 import { motion } from "motion/react";
 
+// import { useEffect, useState } from 'react';
+
+// import {Container} from "@tsparticles/engine"
+// import { loadSlim } from "@tsparticles/slim"
+
+
+
 export const Hero = () => {
+  //   const [init, setInit] = useState(false);
+
+  //   useEffect(() => {
+  //     (async () => {
+  //       // load slim into the engine that tsparticles uses internally
+  //       await loadSlim((window as any).tsParticles?.engine ?? ({} as unknown));
+  //       setInit(true);
+  //     })();
+  //   }, []);
+  // const particlesLoaded = async (container?: Container): Promise<void> => {
+  //   console.log(container);
+  // };
+
+
+
+
   const title = "Jagora";
 
   const parent = {
@@ -20,7 +47,86 @@ export const Hero = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-(--neutral) flex pt-50 flex-col items-center">
+
+      <div className=" w-full h-[600px] overflow-hidden relative bg-(--neutral) flex pt-50 flex-col items-center">
+
+
+
+        {/* {init && <Particles
+          className="absolute inset-0 "
+          id="tsparticles"
+          style={{ position: "absolute", height: "100%", width: "100%" }}
+            particlesLoaded={particlesLoaded}
+            options={{
+                // background: {
+                //     color: {
+                //         value: "#0d47a1",
+                //     },
+                // },
+                fpsLimit: 120,
+                interactivity: {
+                    events: {
+                        onClick: {
+                            enable: true,
+                            mode: "push",
+                        },
+                        onHover: {
+                            enable: true,
+                            mode: "repulse",
+                        },
+                    },
+                    modes: {
+                        push: {
+                            quantity: 4,
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4,
+                        },
+                    },
+                },
+                particles: {
+                    color: {
+                        value: "#007B8C",
+                    },
+                    links: {
+                        color: "#FF8A00",
+                        distance: 150,
+                        enable: true,
+                        opacity: 0.5,
+                        width: 1,
+                    },
+                    move: {
+                        direction: "none",
+                        enable: true,
+                        outModes: {
+                            default: "bounce",
+                        },
+                        random: false,
+                        speed: 6,
+                        straight: false,
+                    },
+                    number: {
+                        density: {
+                            enable: true,
+                        },
+                        value: 80,
+                    },
+                    opacity: {
+                        value: 0.5,
+                    },
+                    shape: {
+                        type: "circle",
+                    },
+                    size: {
+                        value: { min: 1, max: 5 },
+                    },
+                },
+                detectRetina: true,
+            }}
+        />
+          } */}
+
         <motion.h1
           variants={parent}
           initial="hidden"
@@ -39,6 +145,7 @@ export const Hero = () => {
           <button className='text-white bg-(--primary) demo tracking-tight px-4 py-2 rounded'>Get Started</button>
         </div>
       </div>
+      <p className='font-bold md:text-4xl text-2xl'>Our Partners</p>
       <div className='py-20 bg-gray-100'>
         <Marquee pauseOnHover={true} gradient={true} speed={50}>
           <Si99designs size={80} color="black" className='mr-20' />
