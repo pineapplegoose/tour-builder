@@ -133,7 +133,7 @@ export const Hero = () => {
           variants={parent}
           initial="hidden"
           animate="show"
-          className="font-bold text-(--primary) pb-2 md:text-7xl sm:text-6xl text-3xl text-center ">
+          className="font-bold text-blue-600 pb-2 md:text-7xl sm:text-6xl text-3xl text-center ">
           {title.split("").map((char, i) => (
             <motion.span key={i} variants={letter}>
               {char}
@@ -143,8 +143,8 @@ export const Hero = () => {
         <p className="capitalize md:text-4xl text-center pb-5">Simplify your first-time experience. instantly.</p>
         <div className="flex items-center justify-center gap-2.5">
 
-          <button className='text-white demo-two bg-(--accent) tracking-tight px-4 py-2 rounded'>See Demo</button>
-          <button onClick={() => route.push("/dashboard")} className='text-white bg-(--primary) demo tracking-tight px-4 py-2 rounded'>Get Started</button>
+          <button className='text-white demo-two bg-blue-300 tracking-tight px-4 py-2 rounded'>See Demo</button>
+          <button onClick={() => route.push("/dashboard")} className='text-white bg-blue-600 demo tracking-tight px-4 py-2 rounded'>Get Started</button>
         </div>
       </div>
       <p className='font-bold md:text-4xl text-2xl'>Our Partners</p>
