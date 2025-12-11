@@ -6,7 +6,7 @@ import { Si99designs, SiActiveloop, SiActivision, SiAffine, SiAgora, SiBower, Si
 
 import Marquee from "react-fast-marquee";
 import { motion } from "motion/react";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // import { useEffect, useState } from 'react';
 
