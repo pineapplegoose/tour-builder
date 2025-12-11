@@ -68,7 +68,7 @@ export default function StepEditor({ tourId, userId, onClose }: StepEditorProps)
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                 <div className="bg-white rounded-lg p-8">
-                    <Loader className="w-8 h-8 text-blue-600 animate-spin mx-auto" />
+                    <Loader className="w-8 h-8 text-blue-900 animate-spin mx-auto" />
                 </div>
             </div>
         );
@@ -112,7 +112,7 @@ export default function StepEditor({ tourId, userId, onClose }: StepEditorProps)
                                 <div className="flex items-start gap-4">
                                     <div className="flex items-center gap-2">
                                         <GripVertical className="text-gray-400" size={20} />
-                                        <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold shrink-0">
+                                        <div className="w-8 h-8 bg-blue-900 text-white rounded-full flex items-center justify-center font-semibold shrink-0">
                                             {idx + 1}
                                         </div>
                                     </div>
@@ -218,7 +218,7 @@ export default function StepEditor({ tourId, userId, onClose }: StepEditorProps)
                                 <div className="flex gap-3">
                                     <button
                                         onClick={handleCreateStep}
-                                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+                                        className="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
                                     >
                                         Add Step
                                     </button>
@@ -248,7 +248,7 @@ export default function StepEditor({ tourId, userId, onClose }: StepEditorProps)
                         {!isCreating && (
                             <button
                                 onClick={() => setIsCreating(true)}
-                                className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 font-medium"
+                                className="flex-1 bg-blue-900 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 font-medium"
                             >
                                 <Plus size={20} />
                                 Add Step

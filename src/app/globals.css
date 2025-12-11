@@ -26,7 +26,7 @@ body {
   background: linear-gradient(
     to right,
     var(--color-blue-300) 50%,
-    var(--color-blue-600) 50%
+    var(--color-blue-900) 50%
   );
   background-size: 200% 100%;
   background-position: 100% 0;
@@ -45,7 +45,7 @@ body {
 .demo-two {
   background: linear-gradient(
     to right,
-    var(--color-blue-600) 50%,
+    var(--color-blue-900) 50%,
     var(--color-blue-300) 50%
   );
   background-size: 200% 100%;
@@ -103,7 +103,7 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200;
+    @apply bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200;
   }
 
   .btn-secondary {

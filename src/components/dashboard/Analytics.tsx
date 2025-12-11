@@ -24,7 +24,7 @@ export default function AnalyticsView() {
     if (!tours || !allAnalytics) {
         return (
             <div className="flex items-center justify-center h-64">
-                <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+                <Loader className="w-8 h-8 text-blue-900 animate-spin" />
             </div>
         );
     }
@@ -40,7 +40,7 @@ export default function AnalyticsView() {
                 <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
                     <div className="flex items-center justify-between mb-2">
                         <h3 className="text-sm font-medium text-gray-600">Total Tours</h3>
-                        <BarChart3 className="text-blue-600" size={20} />
+                        <BarChart3 className="text-blue-900" size={20} />
                     </div>
                     <p className="text-3xl font-bold text-gray-900">{allAnalytics.totalTours}</p>
                     <p className="text-sm text-gray-500 mt-2">Active tours created</p>
@@ -100,7 +100,7 @@ export default function AnalyticsView() {
                         <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
                             <div className="flex items-center justify-between mb-2">
                                 <h3 className="text-sm font-medium text-gray-600">Sessions</h3>
-                                <Users className="text-blue-600" size={20} />
+                                <Users className="text-blue-900" size={20} />
                             </div>
                             <p className="text-3xl font-bold text-gray-900">{tourAnalytics.totalSessions}</p>
                         </div>
@@ -155,7 +155,7 @@ export default function AnalyticsView() {
                                             </div>
                                             <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                                                 <div
-                                                    className="bg-linear-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-500"
+                                                    className="bg-linear-to-r from-blue-900 to-purple-600 h-2 rounded-full transition-all duration-500"
                                                     style={{ width: `${completionRate}%` }}
                                                 />
                                             </div>

@@ -20,7 +20,7 @@ export function LoginForm({ onLogin: onLogin }: any) {
         <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
                 <div className="text-center mb-8">
-                    <div className="w-16 h-16 bg-linear-to-br from-blue-600 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                    <div className="w-16 h-16 bg-linear-to-br from-blue-900 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
                         <span className="text-2xl font-bold text-white">TB</span>
                     </div>
                     <h1 className="text-3xl font-bold text-gray-900">Tour Builder</h1>
@@ -49,7 +49,7 @@ export function LoginForm({ onLogin: onLogin }: any) {
                     </div>
                     <button
                         onClick={handleSubmit}
-                        className="w-full bg-linear-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition flex items-center justify-center gap-2"
+                        className="w-full bg-linear-to-r from-blue-900 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition flex items-center justify-center gap-2"
                     >
                         <LogIn size={20} />
                         Sign In (Demo)

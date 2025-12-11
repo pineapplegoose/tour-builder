@@ -59,7 +59,7 @@ yarn add @tourbuilder/widget`;
     if (tours === undefined) {
         return (
             <div className="flex items-center justify-center h-64">
-                <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+                <Loader className="w-8 h-8 text-blue-900 animate-spin" />
             </div>
         );
     }
@@ -73,7 +73,7 @@ yarn add @tourbuilder/widget`;
 
             <div className="bg-linear-to-br from-blue-50 to-purple-50 p-6 rounded-lg border border-blue-200">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <Code2 className="text-blue-600" size={20} />
+                    <Code2 className="text-blue-900" size={20} />
                     Quick Start Guide
                 </h3>
                 <div className="space-y-4">
@@ -84,7 +84,7 @@ yarn add @tourbuilder/widget`;
                                 <span className="text-gray-600">Terminal</span>
                                 <button
                                     onClick={() => copyToClipboard(getNpmInstall(), 'npm')}
-                                    className="text-blue-600 hover:text-blue-700"
+                                    className="text-blue-900 hover:text-blue-700"
                                 >
                                     {copiedId === 'npm' ? <Check size={16} /> : <Copy size={16} />}
                                 </button>
@@ -140,7 +140,7 @@ yarn add @tourbuilder/widget`;
                                     <h4 className="font-semibold text-gray-900">HTML/JavaScript</h4>
                                     <button
                                         onClick={() => copyToClipboard(getEmbedCode(tour._id), `html-${tour._id}`)}
-                                        className="flex items-center gap-2 text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                                        className="flex items-center gap-2 text-sm bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                                     >
                                         {copiedId === `html-${tour._id}` ? (
                                             <>
@@ -165,7 +165,7 @@ yarn add @tourbuilder/widget`;
                                     <h4 className="font-semibold text-gray-900">React Component</h4>
                                     <button
                                         onClick={() => copyToClipboard(getReactCode(tour._id), `react-${tour._id}`)}
-                                        className="flex items-center gap-2 text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                                        className="flex items-center gap-2 text-sm bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                                     >
                                         {copiedId === `react-${tour._id}` ? (
                                             <>
@@ -192,7 +192,7 @@ yarn add @tourbuilder/widget`;
             <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
                 <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
-                        <ExternalLink className="text-blue-600" size={24} />
+                        <ExternalLink className="text-blue-900" size={24} />
                     </div>
                     <div>
                         <h3 className="font-semibold text-gray-900 mb-1">Need Help?</h3>
@@ -203,7 +203,7 @@ yarn add @tourbuilder/widget`;
                             href="https://docs.tourbuilder.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1"
+                            className="text-blue-900 hover:text-blue-700 text-sm font-medium flex items-center gap-1"
                         >
                             View Documentation
                             <ExternalLink size={14} />
@@ -216,27 +216,27 @@ yarn add @tourbuilder/widget`;
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Configuration Options</h3>
                 <div className="space-y-3 text-sm">
                     <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-600">tourId</code>
+                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">tourId</code>
                         <span className="text-gray-600">The unique ID of your tour (required)</span>
                     </div>
                     <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-600">apiUrl</code>
+                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">apiUrl</code>
                         <span className="text-gray-600">Your Convex API URL (required)</span>
                     </div>
                     <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-600">theme</code>
+                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">theme</code>
                         <span className="text-gray-600">"light" or "dark" mode (optional, default: "light")</span>
                     </div>
                     <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-600">autoStart</code>
+                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">autoStart</code>
                         <span className="text-gray-600">Start tour automatically (optional, default: false)</span>
                     </div>
                     <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-600">onComplete</code>
+                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">onComplete</code>
                         <span className="text-gray-600">Callback function when tour completes</span>
                     </div>
                     <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-600">onSkip</code>
+                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">onSkip</code>
                         <span className="text-gray-600">Callback function when tour is skipped</span>
                     </div>
                 </div>

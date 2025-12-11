@@ -56,7 +56,7 @@ export default function Sidebar({ currentView, onViewChange, isOpen, onToggle }:
                             if (window.innerWidth < 1024) onToggle();
                         }}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${currentView === 'tours'
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-blue-900 text-white'
                             : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                             }`}
                     >
@@ -70,7 +70,7 @@ export default function Sidebar({ currentView, onViewChange, isOpen, onToggle }:
                             if (window.innerWidth < 1024) onToggle();
                         }}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${currentView === 'analytics'
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-blue-900 text-white'
                             : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                             }`}
                     >
@@ -84,7 +84,7 @@ export default function Sidebar({ currentView, onViewChange, isOpen, onToggle }:
                             if (window.innerWidth < 1024) onToggle();
                         }}
                         className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${currentView === 'embed'
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-blue-900 text-white'
                             : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                             }`}
                     >
@@ -95,7 +95,7 @@ export default function Sidebar({ currentView, onViewChange, isOpen, onToggle }:
 
                 <div className="p-4 border-t border-gray-800">
                     <div className="flex items-center gap-3 px-4 py-3 mb-2">
-                        <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center shrink-0">
+                        <div className="w-10 h-10 bg-linear-to-br from-blue-900 to-purple-600 rounded-full flex items-center justify-center shrink-0">
                             <span className="text-sm font-bold">
                                 {user?.firstName?.charAt(0) || user?.emailAddresses[0]?.emailAddress.charAt(0).toUpperCase() || 'U'}
                             </span>
@@ -121,7 +121,7 @@ export default function Sidebar({ currentView, onViewChange, isOpen, onToggle }:
 
             <button
                 onClick={onToggle}
-                className="lg:hidden fixed bottom-6 right-6 z-30 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition"
+                className="lg:hidden fixed bottom-6 right-6 z-30 w-14 h-14 bg-blue-900 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition"
             >
                 <Menu size={24} />
             </button>

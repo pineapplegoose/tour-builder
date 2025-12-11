@@ -25,7 +25,7 @@ export const Navbar = () => {
   }, []);
 
   const navbarClasses = isScrolled
-    ? "fixed top-0 left-0 right-0 z-50 w-[90%] text-white mt-4 transition-all duration-300 bg-blue-600 backdrop-blur-lg shadow-lg "
+    ? "fixed top-0 left-0 right-0 z-50 w-[90%] text-white mt-4 transition-all duration-300 bg-blue- backdrop-blur-lg shadow-lg "
     : "relative z-50 transition-all duration-300 bg-(--neutral)";
 
 

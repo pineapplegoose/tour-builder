@@ -77,7 +77,7 @@ export default function ToursView() {
     if (tours === undefined) {
         return (
             <div className="flex items-center justify-center h-64">
-                <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+                <Loader className="w-8 h-8 text-blue-900 animate-spin" />
             </div>
         );
     }
@@ -91,7 +91,7 @@ export default function ToursView() {
                 </div>
                 <button
                     onClick={() => setIsCreating(true)}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition shadow-lg hover:shadow-xl"
+                    className="flex items-center gap-2 bg-blue-900 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition shadow-lg hover:shadow-xl"
                 >
                     <Plus size={20} />
                     Create Tour
@@ -130,7 +130,7 @@ export default function ToursView() {
                         <div className="flex gap-3">
                             <button
                                 type="submit"
-                                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                                className="bg-blue-900 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
                             >
                                 Create Tour
                             </button>
@@ -152,13 +152,13 @@ export default function ToursView() {
             {tours.length === 0 ? (
                 <div className="bg-white p-12 rounded-lg shadow border border-gray-200 text-center">
                     <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Plus className="w-8 h-8 text-blue-600" />
+                        <Plus className="w-8 h-8 text-blue-900" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">No tours yet</h3>
                     <p className="text-gray-600 mb-4">Create your first onboarding tour to get started</p>
                     <button
                         onClick={() => setIsCreating(true)}
-                        className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition inline-flex items-center gap-2"
+                        className="bg-blue-900 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition inline-flex items-center gap-2"
                     >
                         <Plus size={20} />
                         Create Your First Tour
@@ -193,7 +193,7 @@ export default function ToursView() {
                                 <div className="flex items-center gap-2 ml-4">
                                     <button
                                         onClick={() => setEditingTourId(tour._id)}
-                                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"
+                                        className="p-2 text-blue-900 hover:bg-blue-50 rounded-lg transition"
                                         title="Edit Steps"
                                     >
                                         <Edit size={18} />

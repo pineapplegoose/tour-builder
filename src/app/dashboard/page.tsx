@@ -20,7 +20,7 @@ export default function DashboardPage() {
                 <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
                     <div className="w-full max-w-md">
                         <div className="text-center mb-8">
-                            <div className="w-16 h-16 bg-linear-to-br from-blue-600 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                            <div className="w-16 h-16 bg-linear-to-br from-blue-900 to-purple-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
                                 <span className="text-2xl font-bold text-white">TB</span>
                             </div>
                             <h1 className="text-3xl font-bold text-gray-900">Tour Builder</h1>
@@ -43,7 +43,7 @@ export default function DashboardPage() {
                 {isLoading ? (
                     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
                         <div className="text-center">
-                            <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                            <div className="w-16 h-16 border-4 border-blue-900 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                             <p className="text-gray-600">Loading dashboard...</p>
                         </div>
                     </div>
