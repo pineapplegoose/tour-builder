@@ -31,19 +31,19 @@ export const Navbar = () => {
 
   return (
 
-    <div className={` ${navbarClasses}  mx-auto p-3 px-15 bg-(--neutral)  flex items-center justify-between pt-4 rounded`}>
+    <div className={` ${navbarClasses}  mx-auto p-3 px-15 bg-(--neutral) flex items-center justify-between pt-4 rounded`}>
       <div className="text-xl font-bold">Jagora</div>
       <div className='flex justify-center items-center gap-4 nav'>
-        <Link href="/" className='hover:text-purple-600 hover:font-bold transition-all'>
+        <Link href="/" className='hover:text-blue-300 hover:font-bold transition-all'>
           Home
         </Link>
-        <Link href="/dashboard" className='hover:text-purple-600 hover:font-bold transition-all'>
+        <Link href="/dashboard" className='hover:text-blue-300 hover:font-bold transition-all'>
           Dashboard
         </Link>
-        <Link href="/about" className='hover:text-purple-600 hover:font-bold transition-all'>
+        <Link href="/about" className='hover:text-blue-300 hover:font-bold transition-all'>
           About Us
         </Link>
-        <Link href="/documentation" className='hover:text-purple-600 hover:font-bold transition-all'>
+        <Link href="/documentation" className='hover:text-blue-300 hover:font-bold transition-all'>
           How it works
         </Link>
 
@@ -55,7 +55,7 @@ export const Navbar = () => {
           </button>
         </Link>
         <Link href="#">
-          <button className={`text-white demo-three tracking-tight px-4 py-2 bg-purple-600 rounded `}>
+          <button className={`text-white demo-three tracking-tight px-4 py-2 bg-blue-300 rounded `}>
             See a Demo
           </button>
         </Link>
