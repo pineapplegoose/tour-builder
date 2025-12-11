@@ -25,7 +25,7 @@ body {
 .demo {
   background: linear-gradient(
     to right,
-    var(--color-blue-300) 50%,
+    var(--color-blue-400) 50%,
     var(--color-blue-900) 50%
   );
   background-size: 200% 100%;
@@ -46,7 +46,7 @@ body {
   background: linear-gradient(
     to right,
     var(--color-blue-900) 50%,
-    var(--color-blue-300) 50%
+    var(--color-blue-400) 50%
   );
   background-size: 200% 100%;
   background-position: 100% 0;
@@ -63,7 +63,7 @@ body {
 }
 
 .demo-three {
-  background: linear-gradient(to right, white 50%, var(--color-blue-300) 50%);
+  background: linear-gradient(to right, white 50%, var(--color-blue-400) 50%);
   background-size: 200% 100%;
   background-position: 100% 0;
   color: white;

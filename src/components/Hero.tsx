@@ -143,23 +143,23 @@ export const Hero = () => {
         <p className="capitalize md:text-4xl text-center pb-5">Simplify your first-time experience. instantly.</p>
         <div className="flex items-center justify-center gap-2.5">
 
-          <button className='text-white demo-two bg-blue-300 tracking-tight px-4 py-2 rounded'>See Demo</button>
+          <button className='text-white demo-two bg-blue-400 tracking-tight px-4 py-2 rounded'>See Demo</button>
           <button onClick={() => route.push("/dashboard")} className='text-white bg-blue-900 demo tracking-tight px-4 py-2 rounded'>Get Started</button>
         </div>
       </div>
       <p className='font-bold md:text-4xl text-2xl'>Our Partners</p>
       <div className='py-20 bg-gray-100'>
         <Marquee pauseOnHover={true} gradient={true} speed={50}>
-          <Si99designs size={80} color="black" className='mr-20' />
-          <SiActiveloop size={80} color="black" className='mr-20' />
-          <SiActivision size={80} color="black" className='mr-20' />
-          <SiAffine size={80} color="black" className='mr-20' />
-          <SiAgora size={80} color='black' className='mr-20' />
-          <SiBower size={80} color='black' className='mr-20' />
-          <SiBoxysvg size={80} color='black' className='mr-20' />
-          <SiBrave size={80} color='black' className='mr-20' />
-          <SiBrenntag size={80} color='black' className='mr-20' />
-          <SiBruno size={80} color='black' className='mr-20' />
+          <Si99designs size={80} color="#1c398e" className='mr-20' />
+          <SiActiveloop size={80} color="#1c398e" className='mr-20' />
+          <SiActivision size={80} color="#1c398e" className='mr-20' />
+          <SiAffine size={80} color="#1c398e" className='mr-20' />
+          <SiAgora size={80} color='#1c398e' className='mr-20' />
+          <SiBower size={80} color='#1c398e' className='mr-20' />
+          <SiBoxysvg size={80} color='#1c398e' className='mr-20' />
+          <SiBrave size={80} color='#1c398e' className='mr-20' />
+          <SiBrenntag size={80} color='#1c398e' className='mr-20' />
+          <SiBruno size={80} color='#1c398e' className='mr-20' />
         </Marquee>
       </div>
     </>

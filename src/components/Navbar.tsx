@@ -25,7 +25,7 @@ export const Navbar = () => {
   }, []);
 
   const navbarClasses = isScrolled
-    ? "fixed top-0 left-0 right-0 z-50 w-[90%] text-white mt-4 transition-all duration-300 bg-blue- backdrop-blur-lg shadow-lg "
+    ? "fixed top-0 left-0 right-0 z-50 w-[90%] text-white mt-4 transition-all duration-300 bg-blue-900 backdrop-blur-lg shadow-lg "
     : "relative z-50 transition-all duration-300 bg-(--neutral)";
 
 
@@ -34,16 +34,16 @@ export const Navbar = () => {
     <div className={` ${navbarClasses}  mx-auto p-3 px-15 bg-(--neutral) flex items-center justify-between pt-4 rounded`}>
       <div className="text-xl font-bold">Jagora</div>
       <div className='flex justify-center items-center gap-4 nav'>
-        <Link href="/" className='hover:text-blue-300 hover:font-bold transition-all'>
+        <Link href="/" className='hover:text-blue-400 hover:font-bold transition-all'>
           Home
         </Link>
-        <Link href="/dashboard" className='hover:text-blue-300 hover:font-bold transition-all'>
+        <Link href="/dashboard" className='hover:text-blue-400 hover:font-bold transition-all'>
           Dashboard
         </Link>
-        <Link href="/about" className='hover:text-blue-300 hover:font-bold transition-all'>
+        <Link href="/about" className='hover:text-blue-400 hover:font-bold transition-all'>
           About Us
         </Link>
-        <Link href="/documentation" className='hover:text-blue-300 hover:font-bold transition-all'>
+        <Link href="/documentation" className='hover:text-blue-400 hover:font-bold transition-all'>
           How it works
         </Link>
 
@@ -55,7 +55,7 @@ export const Navbar = () => {
           </button>
         </Link>
         <Link href="#">
-          <button className={`text-white demo-three tracking-tight px-4 py-2 bg-blue-300 rounded `}>
+          <button className={`text-white demo-three tracking-tight px-4 py-2 bg-blue-400 rounded `}>
             See a Demo
           </button>
         </Link>
