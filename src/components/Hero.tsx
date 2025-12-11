@@ -6,6 +6,7 @@ import { Si99designs, SiActiveloop, SiActivision, SiAffine, SiAgora, SiBower, Si
 
 import Marquee from "react-fast-marquee";
 import { motion } from "motion/react";
+import { useRouter } from 'next/router';
 
 // import { useEffect, useState } from 'react';
 
@@ -15,6 +16,7 @@ import { motion } from "motion/react";
 
 
 export const Hero = () => {
+  const route = useRouter()
   //   const [init, setInit] = useState(false);
 
   //   useEffect(() => {
@@ -142,7 +144,7 @@ export const Hero = () => {
         <div className="flex items-center justify-center gap-2.5">
 
           <button className='text-white demo-two bg-(--accent) tracking-tight px-4 py-2 rounded'>See Demo</button>
-          <button className='text-white bg-(--primary) demo tracking-tight px-4 py-2 rounded'>Get Started</button>
+          <button onClick={() => route.push("/dashboard")} className='text-white bg-(--primary) demo tracking-tight px-4 py-2 rounded'>Get Started</button>
         </div>
       </div>
       <p className='font-bold md:text-4xl text-2xl'>Our Partners</p>
