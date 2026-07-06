@@ -1,138 +1,65 @@
-"use client"
+import { Code2, Star } from "lucide-react";
 
-import { useEffect, useState } from "react";
+const codeLines = [
+  "module.exports = {",
+  "  theme: {",
+  "    primary: '#4299E1',",
+  "    radius: '8px',",
+  "    shadows: 'ambient-soft'",
+  "  },",
+  "  steps: [",
+  "    { target: '#nav-01', content: '...' }",
+  "  ]",
+  "};",
+];
 
-import Image from "next/image";
-import { motion } from "motion/react";
-
-const features = [
-    {
-        image: "/open-source.svg",
-        heading: "Open Source",
-        desc: "Jagora offers a transparent and secure foundation for your onboarding, built by the community."
-    },
-    {
-        image: "/custom.svg",
-        heading: "Highly Customizable",
-        desc: "Jagora provides full customization and configuration for all tour steps."
-    },
-    {
-        image: "/easy.svg",
-        heading: "Awesome User-Experience",
-        desc: "Easy tours for users, simple creation for developers."
-    },
-    {
-        image: "/feedback.svg",
-        heading: "User Feedback",
-        desc: "Instant user feedback, constant improvement."
-    },
-    {
-        image: "/onboarding.svg",
-        heading: "Onboarding Customers",
-        desc: "The onboarding of new users made easy"
-    },
-    {
-        image: "/growth.svg",
-        heading: "Business Growth",
-        desc: "A great boost to your business."
-    },
-]
-const Ripple = ({ size = 100 }) => {
-    return (
-        <>
-            {[0, 0.8, 1.7, 2.7, 3.7].map((delay, i) => (
-                <motion.div
-                    key={i}
-                    className="absolute -z-30 top-3rem left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-gray-600"
-                    style={{
-                        width: size,
-                        height: size,
-                        top: "50%",
-                        left: "50%",
-                    }}
-                    initial={{ scale: 0, opacity: 1 }}
-                    animate={{ scale: 1, opacity: 0 }}
-                    transition={{
-                        duration: 5,
-                        delay: delay,
-                        repeat: Infinity,
-                        ease: "linear",
-                    }}
-                />
-            ))}
-        </>
-    )
-};
-
-function FeatureCarousel() {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const length = features.length;
-    const spacing = 180;
-    const scales = [0.4, 0.6, 1.2, 0.6, 0.4];
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % length);
-        }, 5000);
-        return () => clearInterval(interval)
-    }, [length])
-    const getVisibleItems = () => {
-        const visible: { index: number; position: number }[] = [];
-        for (let p = -2; p <= 2; p++) {
-            const index = (currentIndex + p + length) % length;
-            visible.push({ index, position: p });
-        }
-        return visible
-    }
-
-    return (
-        <div>
-            <h2 className="text-3xl text-gray-900 font-semibold p-4 pt-10">Features on Jagora</h2>
-            <div className="relative w-full overflow-clip mb-15  h-screen flex justify-center items-center mx-auto">
-                {getVisibleItems().map(({ index, position }) => (
-                    <motion.div
-                        key={`${index}-${position}`}
-                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 "
-                        animate={{
-                            x: position * spacing,
-                            scale: scales[position + 2],
-                            y: 0,
-                        }}
-                        transition={{ duration: 0.5 }}
-                    >
-                        <div>
-                            {position === 0 && <Ripple size={800} />}
-
-                            <Image
-                                src={features[index].image}
-                                alt=""
-                                className={` object-cover rounded-full z-50 ${position === 0 ? "border-4 bored-black" : ""
-                                    }`}
-                                width={160}
-                                height={160}
-                            />
-                        </div>
-
-                    </motion.div>
-                ))}
-                <div className="mt-2 text-center z-20 ">
-                    <div className="pt-3 absolute top-15 left-1/2 -translate-x-1/2">
-                        <h1 className="text-2xl w-[20rem] text-gray-900  md:text-4xl lg:text-5xl lg:w-160 mx-auto">
-                            {features[currentIndex].heading}
-                        </h1>
-                    </div>
-
-                    <div className="absolute w-[80%] mx-auto bottom-15 left-1/2 -translate-x-1/2">
-                        <div className="flex items-center text-gray-900 justify-center bg-(--crm_green) border3 w-max border-2 md:w-fit mx-auto text-sm   sm:text-base px-2 sm:px-5 rounded-4xl py-1.5 gap-2 sm:gap-2.5">
-                            <p className="word-nowrap">{features[currentIndex].desc}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+function OpenSourceSection() {
+  return (
+    <section className="bg-[#001543] px-8 py-32">
+      <div className="mx-auto flex w-full max-w-[1216px] flex-col items-center justify-center gap-16 lg:flex-row lg:gap-6">
+        <div className="flex min-w-0 flex-1 flex-col items-start gap-4">
+          <div className="flex items-center gap-2 rounded-full bg-[#4299e133] px-3 py-1">
+            <Code2 size={14} className="text-[#2374ff]" />
+            <span className="text-[12px] font-semibold uppercase leading-4 tracking-[0.6px] text-[#2374ff]">Open Source</span>
+          </div>
+          <h2 className="max-w-[596px] pt-0.5 text-[40px] font-bold leading-[1.08] tracking-[-0.96px] text-white sm:text-[48px] sm:leading-[56px]">
+            Built by developers, for developers.
+          </h2>
+          <p className="max-w-[576px] text-[18px] leading-7 text-[#86a0cd]">
+            Jagora is fully open-source and extensible. Contribute to the core, build your own plugins, or self-host for complete data sovereignty. Join our growing community of 10,000+ contributors.
+          </p>
+          <div className="flex flex-col gap-4 pt-2 sm:flex-row">
+            <a href="https://github.com" className="flex items-center justify-center gap-2 rounded-lg bg-white px-8 py-4 text-[14px] font-medium leading-5 text-[#001543] transition hover:bg-[#eef4ff] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#001543]">
+              <Star size={18} />
+              Star on GitHub
+            </a>
+            <a href="/documentation" className="rounded-lg border-2 border-white/30 px-[34px] py-[18px] text-center text-[14px] font-medium leading-5 text-white transition hover:border-white/70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#001543]">
+              Read the Manifest
+            </a>
+          </div>
         </div>
-    )
 
+        <div className="flex min-w-0 flex-1 justify-center">
+          <div className="w-full max-w-[448px] rounded-2xl border border-white/10 bg-white/5 p-[33px] backdrop-blur-md">
+            <div className="mb-6 flex items-center gap-3">
+              <span className="size-3 rounded-full bg-[#ba1a1a]" />
+              <span className="size-3 rounded-full bg-[#424656]" />
+              <span className="size-3 rounded-full bg-[#d0e1fb]" />
+              <span className="ml-auto text-[12px] leading-4 text-white/50">jagora.config.js</span>
+            </div>
+            <pre className="overflow-auto whitespace-pre-wrap font-mono text-[14px] leading-5 text-white">
+              {codeLines.map((line, index) => (
+                <span key={line} className="block">
+                  <span className="mr-3 text-white/40">{index + 1}</span>
+                  <span className={line.includes("'") ? "text-[#d0e1fb]" : "text-white"}>{line}</span>
+                </span>
+              ))}
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
 
-export default FeatureCarousel;
-
+export default OpenSourceSection;

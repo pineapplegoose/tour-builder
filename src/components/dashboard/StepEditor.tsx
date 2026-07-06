@@ -1,268 +1,251 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import { useQuery, useMutation } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
-import { Id } from '../../../convex/_generated/dataModel';
-import { X, Plus, Trash2, Loader, GripVertical } from 'lucide-react';
+import { FormEvent, useState } from "react";
+import { useMutation, useQuery } from "convex/react";
+import { ArrowLeft, ChevronDown, Crosshair, Eye, GripVertical, Info, Loader, Plus, Send, Trash2, Upload, X } from "lucide-react";
+import { api } from "../../../convex/_generated/api";
+import { Id } from "../../../convex/_generated/dataModel";
 
 interface StepEditorProps {
-    tourId: Id<"tours">;
-    userId?: Id<"users">;
-    onClose: () => void;
+  tourId: Id<"tours">;
+  onBack: () => void;
 }
 
-export default function StepEditor({ tourId, userId, onClose }: StepEditorProps) {
-    const [isCreating, setIsCreating] = useState(false);
-    const [newStep, setNewStep] = useState({
-        stepId: '',
-        title: '',
-        description: '',
-        targetElement: '',
-        position: 'bottom',
-    });
+type Step = {
+  _id: Id<"steps">;
+  stepId: string;
+  title: string;
+  description: string;
+  targetElement: string;
+  position: string;
+  order: number;
+};
 
-    const tour = useQuery(api.tour.getTour, { tourId });
-    const steps = useQuery(api.steps.getSteps, { tourId });
-    const createStep = useMutation(api.steps.createStep);
-    const deleteStep = useMutation(api.steps.deleteStep);
+type Tour = {
+  _id: Id<"tours">;
+  name: string;
+  description: string;
+  isActive: boolean;
+};
 
-    const handleCreateStep = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!steps) return;
+function StepIcon({ index }: { index: number }) {
+  const colors = ["#b7c8e1", "#b3c5ff", "#ffb59d", "#d0e1fb"];
+  const icons = [GripVertical, Info, Send, Crosshair];
+  const Icon = icons[index % icons.length];
+  return (
+    <span className="flex size-12 items-center justify-center rounded-lg border border-[#c2c6d84d]" style={{ backgroundColor: colors[index % colors.length] }}>
+      <Icon size={20} className="text-[#001543]" />
+    </span>
+  );
+}
 
-        try {
-            await createStep({
-                tourId,
-                stepId: newStep.stepId,
-                title: newStep.title,
-                description: newStep.description,
-                targetElement: newStep.targetElement,
-                position: newStep.position,
-                order: steps.length,
-            });
-            setNewStep({
-                stepId: '',
-                title: '',
-                description: '',
-                targetElement: '',
-                position: 'bottom',
-            });
-            setIsCreating(false);
-        } catch (error) {
-            console.error('Failed to create step:', error);
-            alert('Failed to create step. Please try again.');
-        }
-    };
+function AddStepDrawer({
+  open,
+  tourId,
+  order,
+  onClose,
+}: {
+  open: boolean;
+  tourId: Id<"tours">;
+  order: number;
+  onClose: () => void;
+}) {
+  const createStep = useMutation(api.steps.createStep);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [interaction, setInteraction] = useState("Click");
+  const [position, setPosition] = useState("bottom");
+  const [targetElement, setTargetElement] = useState("");
+  const [saving, setSaving] = useState(false);
 
-    const handleDeleteStep = async (stepId: Id<"steps">) => {
-        if (!confirm('Delete this step?')) return;
-        try {
-            await deleteStep({ id: stepId });
-        } catch (error) {
-            console.error('Failed to delete step:', error);
-        }
-    };
+  if (!open) return null;
 
-    if (!tour || !steps) {
-        return (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                <div className="bg-white rounded-lg p-8">
-                    <Loader className="w-8 h-8 text-blue-900 animate-spin mx-auto" />
-                </div>
-            </div>
-        );
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (!title.trim()) return;
+    setSaving(true);
+    try {
+      const normalizedTitle = title.trim();
+      await createStep({
+        tourId,
+        stepId: normalizedTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || `step-${order + 1}`,
+        title: normalizedTitle,
+        description: description.trim(),
+        targetElement: targetElement.trim() || "#main-cta-button",
+        position,
+        order,
+      });
+      setTitle("");
+      setDescription("");
+      setTargetElement("");
+      setInteraction("Click");
+      setPosition("bottom");
+      onClose();
+    } finally {
+      setSaving(false);
     }
+  }
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-                <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                    <div>
-                        <h3 className="text-2xl font-bold text-gray-900">{tour.name}</h3>
-                        <p className="text-gray-600 mt-1">
-                            Manage tour steps (minimum 5 required) • {steps.length} step{steps.length !== 1 ? 's' : ''}
-                        </p>
-                    </div>
-                    <button
-                        onClick={onClose}
-                        className="p-2 hover:bg-gray-100 rounded-lg transition"
-                    >
-                        <X size={24} />
-                    </button>
-                </div>
-
-                <div className="flex-1 overflow-y-auto p-6">
-                    {steps.length < 5 && (
-                        <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                            <p className="text-sm text-yellow-800">
-                                ⚠️ You need at least 5 steps for this tour. Currently have {steps.length}.
-                                Please add {5 - steps.length} more step{5 - steps.length !== 1 ? 's' : ''}.
-                            </p>
-                        </div>
-                    )}
-
-
-                    <div className="space-y-4">
-                        {steps.map((step, idx) => (
-                            <div
-                                key={step._id}
-                                className="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-gray-300 transition"
-                            >
-                                <div className="flex items-start gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <GripVertical className="text-gray-400" size={20} />
-                                        <div className="w-8 h-8 bg-blue-900 text-white rounded-full flex items-center justify-center font-semibold shrink-0">
-                                            {idx + 1}
-                                        </div>
-                                    </div>
-                                    <div className="flex-1">
-                                        <h4 className="font-semibold text-gray-900 mb-1">{step.title}</h4>
-                                        <p className="text-sm text-gray-600 mb-2">{step.description}</p>
-                                        <div className="flex flex-wrap gap-3 text-xs text-gray-500">
-                                            <span>
-                                                ID: <code className="bg-gray-200 px-2 py-0.5 rounded">{step.stepId}</code>
-                                            </span>
-                                            <span>
-                                                Target: <code className="bg-gray-200 px-2 py-0.5 rounded">{step.targetElement}</code>
-                                            </span>
-                                            <span>
-                                                Position: <span className="font-medium capitalize">{step.position}</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <button
-                                        onClick={() => handleDeleteStep(step._id)}
-                                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
-                                    >
-                                        <Trash2 size={18} />
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {isCreating && (
-                        <div className="mt-4 bg-white p-4 rounded-lg border-2 border-blue-200">
-                            <h4 className="font-semibold text-gray-900 mb-4">Add New Step</h4>
-                            <div className="space-y-3">
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Step ID *
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={newStep.stepId}
-                                            onChange={(e) => setNewStep({ ...newStep, stepId: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                            placeholder="welcome-step"
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Position *
-                                        </label>
-                                        <select
-                                            value={newStep.position}
-                                            onChange={(e) => setNewStep({ ...newStep, position: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                        >
-                                            <option value="top">Top</option>
-                                            <option value="bottom">Bottom</option>
-                                            <option value="left">Left</option>
-                                            <option value="right">Right</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Title *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={newStep.title}
-                                        onChange={(e) => setNewStep({ ...newStep, title: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                        placeholder="Welcome to our platform!"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Description *
-                                    </label>
-                                    <textarea
-                                        value={newStep.description}
-                                        onChange={(e) => setNewStep({ ...newStep, description: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                        rows={2}
-                                        placeholder="This is the first step of your journey..."
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Target Element (CSS Selector) *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={newStep.targetElement}
-                                        onChange={(e) => setNewStep({ ...newStep, targetElement: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm font-mono"
-                                        placeholder="#hero, .welcome-section, [data-tour='start']"
-                                        required
-                                    />
-                                </div>
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={handleCreateStep}
-                                        className="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
-                                    >
-                                        Add Step
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            setIsCreating(false);
-                                            setNewStep({
-                                                stepId: '',
-                                                title: '',
-                                                description: '',
-                                                targetElement: '',
-                                                position: 'bottom',
-                                            });
-                                        }}
-                                        className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition text-sm font-medium"
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                <div className="p-6 border-t border-gray-200 bg-gray-50">
-                    <div className="flex gap-3">
-                        {!isCreating && (
-                            <button
-                                onClick={() => setIsCreating(true)}
-                                className="flex-1 bg-blue-900 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center gap-2 font-medium"
-                            >
-                                <Plus size={20} />
-                                Add Step
-                            </button>
-                        )}
-                        <button
-                            onClick={onClose}
-                            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium"
-                        >
-                            Done
-                        </button>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end bg-[#001543]/20 backdrop-blur-sm">
+      <form onSubmit={handleSubmit} className="h-full w-full max-w-[400px] border-l border-[#c2c6d8] bg-white p-6 shadow-2xl">
+        <div className="mb-8 flex items-center justify-between">
+          <h2 className="text-[24px] font-semibold leading-8 tracking-[-0.24px] text-[#191c1e]">Add New Step</h2>
+          <button type="button" onClick={onClose} className="rounded-full p-2 text-[#191c1e] hover:bg-[#f2f4f6]" aria-label="Close add step">
+            <X size={20} />
+          </button>
         </div>
+
+        <div className="space-y-6">
+          <label className="block text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">
+            Step Title
+            <input
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              className="mt-2 w-full rounded-lg border border-[#c2c6d8] bg-[#f8f9fb] px-3 py-2.5 text-[14px] text-[#191c1e] outline-none focus:border-[#0050cb] focus:ring-2 focus:ring-[#0050cb]/15"
+              placeholder="e.g. Profile Setup Intro"
+              required
+            />
+          </label>
+
+          <label className="block text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">
+            Body Text / Content
+            <textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              className="mt-2 min-h-24 w-full rounded-lg border border-[#c2c6d8] bg-[#f8f9fb] px-3 py-2.5 text-[14px] leading-5 text-[#191c1e] outline-none focus:border-[#0050cb] focus:ring-2 focus:ring-[#0050cb]/15"
+              placeholder="Describe what the user should do in this step..."
+            />
+          </label>
+
+          <div className="grid grid-cols-2 gap-4">
+            <label className="block text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">
+              Interaction Type
+              <span className="mt-2 flex items-center justify-between rounded-lg border border-[#c2c6d8] bg-[#f8f9fb] px-3 py-2.5 text-[14px] text-[#191c1e]">
+                <select value={interaction} onChange={(event) => setInteraction(event.target.value)} className="w-full appearance-none bg-transparent outline-none">
+                  <option>Click</option>
+                  <option>Hover</option>
+                  <option>Focus</option>
+                </select>
+                <ChevronDown size={16} />
+              </span>
+            </label>
+            <label className="block text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">
+              Placement
+              <span className="mt-2 flex items-center justify-between rounded-lg border border-[#c2c6d8] bg-[#f8f9fb] px-3 py-2.5 text-[14px] text-[#191c1e]">
+                <select value={position} onChange={(event) => setPosition(event.target.value)} className="w-full appearance-none bg-transparent capitalize outline-none">
+                  <option value="bottom">Bottom</option>
+                  <option value="top">Top</option>
+                  <option value="left">Left</option>
+                  <option value="right">Right</option>
+                </select>
+                <ChevronDown size={16} />
+              </span>
+            </label>
+          </div>
+
+          <label className="block text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">
+            CSS Selector Target
+            <span className="mt-2 flex items-center rounded-lg border border-[#c2c6d8] bg-[#f2f4f6] px-3 py-2.5">
+              <input
+                value={targetElement}
+                onChange={(event) => setTargetElement(event.target.value)}
+                className="w-full bg-transparent font-mono text-[13px] text-[#191c1e] outline-none placeholder:text-[#6b7280]"
+                placeholder="#main-cta-button"
+              />
+              <Crosshair size={16} className="text-[#0050cb]" />
+            </span>
+            <span className="mt-1.5 block text-[11px] italic leading-[16.5px] text-[#424656]">Enter a unique identifier to anchor the tooltip.</span>
+          </label>
+        </div>
+
+        <div className="mt-7 grid grid-cols-2 gap-3 border-t border-[#c2c6d8] pt-6">
+          <button type="button" onClick={onClose} className="rounded-lg border border-[#c2c6d8] px-4 py-3 text-[12px] font-medium tracking-[0.24px] text-[#191c1e]">
+            Cancel
+          </button>
+          <button type="submit" disabled={saving} className="rounded-lg bg-[#0050cb] px-4 py-3 text-[12px] font-medium tracking-[0.24px] text-white disabled:opacity-60">
+            {saving ? "Saving..." : "Save Step"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+export default function StepEditor({ tourId, onBack }: StepEditorProps) {
+  const tour = useQuery(api.tour.getTour, { tourId }) as Tour | undefined;
+  const steps = useQuery(api.steps.getSteps, { tourId }) as Step[] | undefined;
+  const deleteStep = useMutation(api.steps.deleteStep);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  if (!tour || !steps) {
+    return (
+      <div className="flex min-h-[520px] items-center justify-center">
+        <Loader className="size-8 animate-spin text-[#0050cb]" />
+      </div>
     );
+  }
+
+  return (
+    <>
+      <div className="px-6 py-8 sm:px-10">
+        <header className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+          <div>
+            <button type="button" onClick={onBack} className="mb-5 flex items-center gap-2 text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656] hover:text-[#0050cb]">
+              <ArrowLeft size={14} />
+              Back to Tours
+            </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-[32px] font-semibold leading-10 tracking-[-0.8px] text-[#424656]">{tour.name}</h1>
+              <span className="flex items-center gap-1.5 rounded-full bg-[#dcfce7] px-2.5 py-1 text-[11px] font-bold uppercase leading-[16.5px] tracking-[-0.275px] text-[#15803d]">
+                <span className="size-1.5 rounded-full bg-[#16a34a]" />
+                {tour.isActive ? "Active" : "Draft"}
+              </span>
+            </div>
+            <p className="mt-1 text-[14px] leading-5 text-[#424656]">{tour.description || "Guided tour steps and targeting."}</p>
+          </div>
+          <div className="flex gap-3">
+            <button className="flex items-center gap-2 rounded-lg border border-[#c2c6d8] bg-[#f8f9fb] px-[17px] py-[9px] text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">
+              <Eye size={16} />
+              Preview
+            </button>
+            <button className="flex items-center gap-2 rounded-lg bg-[#0050cb] px-4 py-2 text-[12px] font-medium leading-4 tracking-[0.24px] text-white shadow-sm">
+              <Upload size={14} />
+              Publish Changes
+            </button>
+          </div>
+        </header>
+
+        <section className="flex max-w-[800px] flex-col gap-3">
+          {steps.map((step, index) => (
+            <article key={step._id} className="group flex items-center gap-4 rounded-xl border border-[#c2c6d8] bg-white p-[17px]">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[#f2f4f6] text-[16px] font-bold leading-6 text-[#424656]">{index + 1}</span>
+              <StepIcon index={index} />
+              <div className="min-w-0 flex-1">
+                <h2 className="truncate text-[16px] leading-6 text-[#424656]">{step.title}</h2>
+                <p className="truncate text-[14px] leading-5 text-[#424656]">{step.description || step.targetElement}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => deleteStep({ id: step._id })}
+                className="rounded-lg p-2 text-[#424656] opacity-0 transition hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
+                aria-label={`Delete ${step.title}`}
+              >
+                <Trash2 size={16} />
+              </button>
+            </article>
+          ))}
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(true)}
+            className="flex min-h-20 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#c2c6d8] p-[26px] text-center transition hover:border-[#0050cb] hover:bg-[#eef4ff]"
+          >
+            <Plus size={28} className="text-[#424656]" />
+            <span className="text-[12px] font-bold uppercase leading-4 tracking-[0.6px] text-[#424656]">Add New Step</span>
+          </button>
+        </section>
+      </div>
+      <AddStepDrawer open={drawerOpen} tourId={tourId} order={steps.length} onClose={() => setDrawerOpen(false)} />
+    </>
+  );
 }

@@ -1,67 +1,55 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
+import Link from "next/link";
+import { Route } from "lucide-react";
+
+const footerGroups = [
+  { title: "Product", links: ["Features", "Integrations", "Pricing", "Documentation"] },
+  { title: "Company", links: ["About", "Blog", "Careers"] },
+  { title: "Legal", links: ["Privacy Policy", "Terms of Service", "Cookie Policy"] },
+];
 
 export const Footer = () => {
   return (
-    <div className="bg-blue-900 py-15 text-white md:p-12 p-6">
-      <div className='grid grid-cols-1 md:grid-cols-4 sm:grid-cols-2items-start justify-between '>
-        <div>
-          <div>
-
-            <h1 className='text-xl font-bold pb-5'>Jagora</h1>
-            <p>Showcase your product in a unique way</p>
+    <footer className="border-t border-[#f3f4f6] bg-white pb-20 pt-[81px]">
+      <div className="mx-auto w-full max-w-[1280px] px-6">
+        <div className="grid gap-12 md:grid-cols-5">
+          <div className="flex flex-col items-start gap-6 md:col-span-2">
+            <Link href="/" className="flex w-[180px] items-center gap-3 px-2" aria-label="TourMaster home">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-[#0050cb] text-white">
+                <Route size={18} strokeWidth={2.5} />
+              </span>
+              <span className="flex flex-col">
+                <span className="text-[18px] font-bold leading-[22.5px] text-[#191c1e]">TourMaster</span>
+                <span className="text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">Enterprise SaaS</span>
+              </span>
+            </Link>
+            <p className="max-w-80 text-[16px] leading-6 text-[#6b7280]">
+              Empowering teams to create world-class onboarding experiences with ease.
+            </p>
+            <div className="flex gap-4 text-[16px] leading-6 text-[#9ca3af]">
+              <a href="https://twitter.com" className="hover:text-[#0050cb]">Twitter</a>
+              <a href="https://linkedin.com" className="hover:text-[#0050cb]">LinkedIn</a>
+            </div>
           </div>
-          <button>
-            Get a Demo
-          </button>
 
+          {footerGroups.map((group) => (
+            <div key={group.title} className="flex flex-col gap-6">
+              <h2 className="text-[16px] font-bold leading-6 text-[#0050cb]">{group.title}</h2>
+              <ul className="flex flex-col gap-4">
+                {group.links.map((item) => (
+                  <li key={item}>
+                    <Link href="#" className="text-[16px] leading-6 text-[#6b7280] hover:text-[#0050cb]">
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div>
-          <Link href={""}>
-            <p className='font-semibold pb-5'>Dashboard</p>
-          </Link>
-          <ul>
-            <li>Product Analytics</li>
-            <li>User Engagement </li>
-            <li>USer Feedback</li>
-          </ul>
-        </div>
-        <div>
-          <p className='font-semibold pb-5'>Company</p>
-          <ul>
-            <li>Careers</li>
-            <li>Customers</li>
-            <li>Contact Us</li>
-            <li>About Us</li>
-          </ul>
-        </div>
-        <div>
-          <p className='font-semibold pb-5'>Use Cases</p>
-          <ul>
-            <li>
-              User Onboarding
-
-            </li>
-            <li>Customer Retention</li>
-
-            <line>Product Led Growth</line>
-            <li>In-App Support</li>
-          </ul>
+        <div className="mt-20 border-t border-[#f3f4f6] pt-[33px]">
+          <p className="text-[14px] leading-5 text-[#9ca3af]">© 2024 Jagora Inc. All rights reserved.</p>
         </div>
       </div>
-      <div className='h-0.5 bg-amber-50 mt-15' />
-      <div className='flex items-center justify-between py-15'>
-        <div>
-          <p>Jagora 2025. All rights reserved</p>
-        </div>
-
-        <div className='flex items-center gap-2.5'>
-          <Image src={'/facebook.svg'} alt={'facebook'} width={30} height={30} />
-          <Image src={'/x.svg'} alt={'facebook'} width={30} height={30} />
-          <Image src={'/github.svg'} alt={'facebook'} width={30} height={30} />
-        </div>
-      </div>
-    </div>
-  )
-}
+    </footer>
+  );
+};

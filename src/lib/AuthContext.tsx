@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { Id } from '../../convex/_generated/dataModel';
+import { useRouter } from 'next/navigation';
 
 interface User {
     userId: Id<"users">;
@@ -22,6 +23,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { user: clerkUser, isLoaded } = useUser();
     const [convexUser, setConvexUser] = useState<User | null>(null);
+    const route = useRouter();
 
     const ensureUser = useMutation(api.users.ensureUser);
     const currentUser = useQuery(
@@ -38,6 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                         email: clerkUser.emailAddresses[0]?.emailAddress || "",
                         name: clerkUser.fullName || clerkUser.firstName || "User",
                     });
+                    route.push("/dashboard");
                 } catch (error) {
                     console.error("Error ensuring user:", error);
                 }

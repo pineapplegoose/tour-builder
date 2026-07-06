@@ -2,8 +2,11 @@
 import React, { useState } from 'react';
 import { LogIn } from 'lucide-react';
 
+interface LoginFormProps {
+    onLogin: (user: { userId: string; email: string; name: string }) => void;
+}
 
-export function LoginForm({ onLogin: onLogin }: any) {
+export function LoginForm({ onLogin }: LoginFormProps) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

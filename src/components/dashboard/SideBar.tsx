@@ -1,130 +1,74 @@
-'use client'
+"use client";
 
-import { Home, BarChart3, Code2, LogOut, Menu, X } from 'lucide-react';
-import { useClerk, useUser } from '@clerk/nextjs';
-import Link from 'next/link';
+import Link from "next/link";
+import { BarChart3, CircleHelp, Plus, Puzzle, Route, Settings } from "lucide-react";
+
+export type DashboardView = "dashboard" | "tours" | "integrations";
 
 interface SidebarProps {
-    currentView: 'tours' | 'analytics' | 'embed';
-    onViewChange: (view: 'tours' | 'analytics' | 'embed') => void;
-    isOpen: boolean;
-    onToggle: () => void;
+  currentView: DashboardView;
+  onViewChange: (view: DashboardView) => void;
+  onCreateTour: () => void;
 }
 
-export default function Sidebar({ currentView, onViewChange, isOpen, onToggle }: SidebarProps) {
-    const { signOut } = useClerk();
-    const { user } = useUser();
+const navItems = [
+  { id: "tours" as const, label: "Tours", icon: Route },
+  { id: "dashboard" as const, label: "Analytics", icon: BarChart3 },
+  { id: "integrations" as const, label: "Integrations", icon: Puzzle },
+];
 
-    const handleSignOut = () => {
-        signOut();
-    };
+export default function Sidebar({ currentView, onViewChange, onCreateTour }: SidebarProps) {
+  return (
+    <aside className="fixed inset-y-0 left-0 z-30 hidden h-screen w-64 flex-col justify-between border-r border-[#c2c6d8] bg-[#f2f4f6] px-4 py-6 lg:flex">
+      <div>
+        <Link href="/" className="mb-10 flex items-center gap-3 px-2" aria-label="TourMaster home">
+          <span className="flex size-10 items-center justify-center rounded-lg bg-[#0050cb] text-white">
+            <Route size={18} strokeWidth={2.5} />
+          </span>
+          <span className="flex flex-col">
+            <span className="text-[18px] font-bold leading-[22.5px] text-[#424656]">TourMaster</span>
+            <span className="text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">Enterprise SaaS</span>
+          </span>
+        </Link>
 
-    return (
-        <>
-            {isOpen && (
-                <div
-                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-                    onClick={onToggle}
-                />
-            )}
+        <nav className="flex flex-col gap-[5px]" aria-label="Dashboard navigation">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active = currentView === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onViewChange(item.id)}
+                className={`flex h-[38px] w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-[14px] font-medium leading-4 tracking-[0.24px] transition ${active ? "text-[#0050cb]" : "text-[#424656] hover:bg-white/70 hover:text-[#0050cb]"
+                  }`}
+              >
+                <Icon size={18} />
+                {item.label}
+              </button>
+            );
+          })}
+        </nav>
+      </div>
 
-            <div
-                className={`
-          fixed lg:static inset-y-0 left-0 z-50
-          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          transition-transform duration-300 ease-in-out
-          w-64 bg-gray-900 text-white flex flex-col
-        `}
-            >
-                <div className="p-6 border-b border-gray-800 flex items-center justify-between">
-                    <div>
-                        <Link href="/" ><h1 className="text-xl font-bold">Tour Builder</h1></Link>
-                        <p className="text-sm text-gray-400 mt-1">Dashboard</p>
-                    </div>
-                    <button
-                        onClick={onToggle}
-                        className="lg:hidden p-2 hover:bg-gray-800 rounded-lg transition"
-                    >
-                        <X size={20} />
-                    </button>
-                </div>
-
-                <nav className="flex-1 p-4 space-y-2">
-                    <button
-                        onClick={() => {
-                            onViewChange('tours');
-                            if (window.innerWidth < 1024) onToggle();
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${currentView === 'tours'
-                            ? 'bg-blue-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                            }`}
-                    >
-                        <Home size={20} />
-                        <span className="font-medium">Tours</span>
-                    </button>
-
-                    <button
-                        onClick={() => {
-                            onViewChange('analytics');
-                            if (window.innerWidth < 1024) onToggle();
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${currentView === 'analytics'
-                            ? 'bg-blue-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                            }`}
-                    >
-                        <BarChart3 size={20} />
-                        <span className="font-medium">Analytics</span>
-                    </button>
-
-                    <button
-                        onClick={() => {
-                            onViewChange('embed');
-                            if (window.innerWidth < 1024) onToggle();
-                        }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${currentView === 'embed'
-                            ? 'bg-blue-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                            }`}
-                    >
-                        <Code2 size={20} />
-                        <span className="font-medium">Embed Code</span>
-                    </button>
-                </nav>
-
-                <div className="p-4 border-t border-gray-800">
-                    <div className="flex items-center gap-3 px-4 py-3 mb-2">
-                        <div className="w-10 h-10 bg-linear-to-br from-blue-900 to-purple-600 rounded-full flex items-center justify-center shrink-0">
-                            <span className="text-sm font-bold">
-                                {user?.firstName?.charAt(0) || user?.emailAddresses[0]?.emailAddress.charAt(0).toUpperCase() || 'U'}
-                            </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">
-                                {user?.fullName || user?.firstName || 'User'}
-                            </p>
-                            <p className="text-xs text-gray-400 truncate">
-                                {user?.emailAddresses[0]?.emailAddress || ''}
-                            </p>
-                        </div>
-                    </div>
-                    <button
-                        onClick={handleSignOut}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-white rounded-lg transition"
-                    >
-                        <LogOut size={20} />
-                        <span className="font-medium">Sign Out</span>
-                    </button>
-                </div>
-            </div>
-
-            <button
-                onClick={onToggle}
-                className="lg:hidden fixed bottom-6 right-6 z-30 w-14 h-14 bg-blue-900 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition"
-            >
-                <Menu size={24} />
-            </button>
-        </>
-    );
+      <div className="flex flex-col gap-1">
+        <button
+          type="button"
+          onClick={onCreateTour}
+          className="flex w-full items-center justify-center cursor-pointer gap-2 rounded-lg bg-[#0050cb] px-4 py-3.5 text-[14px] font-medium leading-4 tracking-[0.24px] text-white shadow-sm transition hover:bg-[#003f9f]"
+        >
+          <Plus size={14} />
+          Create Tour
+        </button>
+        <button className="mt-[26px] flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-[14px] font-medium leading-4 tracking-[0.24px] text-[#424656] transition hover:bg-white/70">
+          <Settings size={20} />
+          Settings
+        </button>
+        <button className="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-[14px] font-medium leading-4 tracking-[0.24px] text-[#424656] transition hover:bg-white/70">
+          <CircleHelp size={20} />
+          Support
+        </button>
+      </div>
+    </aside>
+  );
 }

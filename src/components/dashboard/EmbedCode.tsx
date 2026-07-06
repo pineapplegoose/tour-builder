@@ -1,246 +1,159 @@
-'use client'
+"use client";
 
-import { useState } from 'react';
-import { useQuery } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
-import { useAuth } from '../../lib/AuthContext';
-import { Copy, Check, Code2, Loader, ExternalLink } from 'lucide-react';
+import { BookOpen, ChevronRight, Clipboard, Code2, ExternalLink, Info, Loader, Mail, ShieldCheck, TerminalSquare } from "lucide-react";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
-export default function EmbedView() {
-    const { user } = useAuth();
-    const [copiedId, setCopiedId] = useState<string | null>(null);
+function CodeBlock({ children }: { children: string }) {
+  async function copyCode() {
+    await navigator.clipboard.writeText(children);
+  }
 
-    const tours = useQuery(api.tour.getTours);
-
-    const getEmbedCode = (tourId: string) => {
-        return `<!-- Tour Builder Widget -->
-<script src="https://cdn.yourdomain.com/tour-widget.js"></script>
-<script>
-  TourWidget.init({
-    tourId: "${tourId}",
-    apiUrl: "${process.env.NEXT_PUBLIC_CONVEX_URL}",
-    theme: "light", // or "dark"
-    autoStart: true // Start tour automatically
-  });
-</script>`;
-    };
-
-    const getReactCode = (tourId: string) => {
-        return `import { TourWidget } from '@tourbuilder/react';
-
-function App() {
   return (
-    <div>
-      {/* Your app content */}
-      
-      <TourWidget
-        tourId="${tourId}"
-        apiUrl="${process.env.NEXT_PUBLIC_CONVEX_URL}"
-        theme="light"
-        autoStart={true}
-      />
+    <div className="relative rounded-lg bg-[#1e1e1e] p-6 font-mono text-[13px] leading-[21px] text-[#b7c8e1]">
+      <button type="button" onClick={copyCode} className="absolute right-4 top-4 text-[#b7c8e1] hover:text-white" aria-label="Copy code">
+        <Clipboard size={16} />
+      </button>
+      <pre className="overflow-auto whitespace-pre-wrap pr-8">{children}</pre>
     </div>
   );
-}`;
-    };
+}
 
-    const getNpmInstall = () => {
-        return `npm install @tourbuilder/widget
-# or
-yarn add @tourbuilder/widget`;
-    };
+export default function EmbedView() {
+  const tours = useQuery(api.tour.getTours);
+  const firstTour = tours?.[0];
+  const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL || "https://your-deployment.convex.cloud";
+  const widgetCode = `// 1. Include the SDK
+<script src="https://cdn.tourbuilder.pro/v2/widget.js"></script>
 
-    const copyToClipboard = (text: string, id: string) => {
-        navigator.clipboard.writeText(text);
-        setCopiedId(id);
-        setTimeout(() => setCopiedId(null), 2000);
-    };
-
-    if (tours === undefined) {
-        return (
-            <div className="flex items-center justify-center h-64">
-                <Loader className="w-8 h-8 text-blue-900 animate-spin" />
-            </div>
-        );
+// 2. Initialize the widget
+const widget = new TourBuilder({
+  tourId: '${firstTour?._id ?? "tour_id_here"}',
+  apiUrl: '${convexUrl}',
+  containerId: '#tour-viewport',
+  options: {
+    theme: 'light',
+    autoplay: true,
+    ui: {
+      showControls: true,
+      accentColor: '#0050cb'
     }
+  }
+});
 
+widget.mount();`;
+
+  if (tours === undefined) {
     return (
-        <div className="space-y-6">
-            <div>
-                <h2 className="text-3xl font-bold text-gray-900">Embed Code</h2>
-                <p className="text-gray-600 mt-1">Copy and paste these codes into your website</p>
-            </div>
-
-            <div className="bg-linear-to-br from-blue-50 to-purple-50 p-6 rounded-lg border border-blue-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <Code2 className="text-blue-900" size={20} />
-                    Quick Start Guide
-                </h3>
-                <div className="space-y-4">
-                    <div>
-                        <p className="text-sm font-medium text-gray-700 mb-2">1. Install the widget (optional)</p>
-                        <div className="bg-white rounded-lg p-4 font-mono text-sm">
-                            <div className="flex items-center justify-between mb-2">
-                                <span className="text-gray-600">Terminal</span>
-                                <button
-                                    onClick={() => copyToClipboard(getNpmInstall(), 'npm')}
-                                    className="text-blue-900 hover:text-blue-700"
-                                >
-                                    {copiedId === 'npm' ? <Check size={16} /> : <Copy size={16} />}
-                                </button>
-                            </div>
-                            <pre className="text-gray-800">{getNpmInstall()}</pre>
-                        </div>
-                    </div>
-                    <div>
-                        <p className="text-sm font-medium text-gray-700 mb-2">
-                            2. Copy the embed code for your tour (below)
-                        </p>
-                    </div>
-                    <div>
-                        <p className="text-sm font-medium text-gray-700 mb-2">
-                            3. Paste it before the closing <code className="bg-white px-2 py-0.5 rounded">&lt;/body&gt;</code> tag
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            {tours.length === 0 ? (
-                <div className="bg-white p-12 rounded-lg shadow border border-gray-200 text-center">
-                    <Code2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">No Tours Available</h3>
-                    <p className="text-gray-600">Create a tour first to get the embed code</p>
-                </div>
-            ) : (
-                <div className="space-y-6">
-                    {tours.map((tour) => (
-                        <div key={tour._id} className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
-                            <div className="p-6 bg-linear-to-r from-gray-50 to-white border-b border-gray-200">
-                                <div className="flex items-start justify-between">
-                                    <div>
-                                        <h3 className="text-xl font-semibold text-gray-900 mb-1">{tour.name}</h3>
-                                        <p className="text-sm text-gray-600">{tour.description}</p>
-                                        <div className="flex items-center gap-3 mt-2 text-sm">
-                                            <span
-                                                className={`px-2 py-1 text-xs font-medium rounded ${tour.isActive
-                                                    ? 'bg-green-100 text-green-700'
-                                                    : 'bg-gray-100 text-gray-600'
-                                                    }`}
-                                            >
-                                                {tour.isActive ? 'Active' : 'Inactive'}
-                                            </span>
-                                            <span className="text-gray-500">{tour.stepCount} steps</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="p-6 border-b border-gray-200">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h4 className="font-semibold text-gray-900">HTML/JavaScript</h4>
-                                    <button
-                                        onClick={() => copyToClipboard(getEmbedCode(tour._id), `html-${tour._id}`)}
-                                        className="flex items-center gap-2 text-sm bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                                    >
-                                        {copiedId === `html-${tour._id}` ? (
-                                            <>
-                                                <Check size={16} />
-                                                Copied!
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Copy size={16} />
-                                                Copy Code
-                                            </>
-                                        )}
-                                    </button>
-                                </div>
-                                <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-                                    <code>{getEmbedCode(tour._id)}</code>
-                                </pre>
-                            </div>
-
-                            <div className="p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h4 className="font-semibold text-gray-900">React Component</h4>
-                                    <button
-                                        onClick={() => copyToClipboard(getReactCode(tour._id), `react-${tour._id}`)}
-                                        className="flex items-center gap-2 text-sm bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                                    >
-                                        {copiedId === `react-${tour._id}` ? (
-                                            <>
-                                                <Check size={16} />
-                                                Copied!
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Copy size={16} />
-                                                Copy Code
-                                            </>
-                                        )}
-                                    </button>
-                                </div>
-                                <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
-                                    <code>{getReactCode(tour._id)}</code>
-                                </pre>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-                <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
-                        <ExternalLink className="text-blue-900" size={24} />
-                    </div>
-                    <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">Need Help?</h3>
-                        <p className="text-gray-600 text-sm mb-3">
-                            Check out our documentation for advanced configuration options, styling guides, and API reference.
-                        </p>
-                        <a
-                            href="https://docs.tourbuilder.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-900 hover:text-blue-700 text-sm font-medium flex items-center gap-1"
-                        >
-                            View Documentation
-                            <ExternalLink size={14} />
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Configuration Options</h3>
-                <div className="space-y-3 text-sm">
-                    <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">tourId</code>
-                        <span className="text-gray-600">The unique ID of your tour (required)</span>
-                    </div>
-                    <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">apiUrl</code>
-                        <span className="text-gray-600">Your Convex API URL (required)</span>
-                    </div>
-                    <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">theme</code>
-                        <span className="text-gray-600">"light" or "dark" mode (optional, default: "light")</span>
-                    </div>
-                    <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">autoStart</code>
-                        <span className="text-gray-600">Start tour automatically (optional, default: false)</span>
-                    </div>
-                    <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">onComplete</code>
-                        <span className="text-gray-600">Callback function when tour completes</span>
-                    </div>
-                    <div className="flex gap-3">
-                        <code className="bg-gray-100 px-3 py-1 rounded font-mono text-blue-900">onSkip</code>
-                        <span className="text-gray-600">Callback function when tour is skipped</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div className="flex min-h-[520px] items-center justify-center">
+        <Loader className="size-8 animate-spin text-[#0050cb]" />
+      </div>
     );
+  }
+
+  return (
+    <div className="flex w-full max-w-[1440px] flex-col gap-12 px-6 py-12 sm:px-10">
+      <section className="flex flex-col gap-2">
+        <div className="flex items-center gap-2 text-[12px] font-medium uppercase leading-4 tracking-[0.24px] text-[#0050cb]">
+          <BookOpen size={14} />
+          Documentation
+        </div>
+        <h1 className="text-[32px] font-semibold leading-10 tracking-[-0.64px] text-[#191c1e]">Embed the Widget</h1>
+        <p className="max-w-[768px] text-[16px] leading-6 text-[#424656]">
+          Seamlessly integrate your virtual tours into any website or application. Use our optimized script to provide high-performance, interactive experiences with minimal latency.
+        </p>
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-12">
+        <div className="flex flex-col gap-6 xl:col-span-5">
+          <article className="rounded-xl border border-[#fbfbfb] bg-white p-[25px] shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-lg bg-[#0050cb1a] text-[#0050cb]">
+                <TerminalSquare size={20} />
+              </span>
+              <h2 className="text-[18px] font-semibold leading-7 text-[#191c1e]">Quick Start</h2>
+            </div>
+            <p className="mt-4 text-[14px] leading-5 text-[#424656]">
+              Install the TourBuilder Pro SDK via your preferred package manager to get started with full TypeScript support.
+            </p>
+            <div className="mt-4 rounded-lg bg-[#1e1e1e] px-4 py-[18px] font-mono text-[13px] leading-5 text-[#b3c5ff]">
+              npm install @tourbuilder/widget
+            </div>
+            <p className="mt-4 flex items-center gap-2 text-[12px] leading-4 tracking-[0.24px] text-[#424656]">
+              <Info size={13} />
+              v2.4.1 available. <span className="text-[#0050cb]">View changelog</span>
+            </p>
+          </article>
+
+          <div>
+            <h2 className="mb-6 px-2 text-[18px] font-semibold leading-7 text-[#191c1e]">Developer Resources</h2>
+            <div className="flex flex-col gap-6">
+              {[
+                { title: "API Reference", desc: "Explore complete method signatures and hooks.", icon: BookOpen },
+                { title: "Security Guidelines", desc: "Learn about API key rotation and CORS policies.", icon: ShieldCheck },
+              ].map((resource) => {
+                const Icon = resource.icon;
+                return (
+                  <a key={resource.title} href="#" className="flex items-center justify-between rounded-xl border border-[#dddddd] bg-white p-[17px] hover:border-[#0050cb]">
+                    <span className="flex items-center gap-4">
+                      <span className="flex size-12 items-center justify-center rounded-lg bg-[#e7e8ea] text-[#424656]">
+                        <Icon size={20} />
+                      </span>
+                      <span>
+                        <span className="block text-[18px] font-semibold leading-7 text-[#191c1e]">{resource.title}</span>
+                        <span className="block text-[14px] leading-5 text-[#424656]">{resource.desc}</span>
+                      </span>
+                    </span>
+                    <ChevronRight size={16} className="text-[#424656]" />
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <article className="rounded-xl border border-[#fbfbfb] bg-white p-6 shadow-sm xl:col-span-7">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="flex size-10 items-center justify-center rounded-lg bg-[rgba(204,66,4,0.1)] text-[#cc4204]">
+                <Code2 size={22} />
+              </span>
+              <h2 className="text-[18px] font-semibold leading-7 text-[#191c1e]">Widget Configuration</h2>
+            </div>
+            <span className="rounded-full bg-[#edeef0] px-3 py-1 text-[12px] font-medium leading-4 tracking-[0.24px] text-[#424656]">HTML / JS</span>
+          </div>
+          <p className="mb-6 max-w-[540px] text-[14px] leading-5 text-[#424656]">
+            Add the script tag to your header and initialize the widget with your unique API key. Customize the theme and behavior using the configuration object.
+          </p>
+          <CodeBlock>{widgetCode}</CodeBlock>
+          <div className="mt-6 flex gap-3 rounded-lg bg-[#f2f4f6] p-4">
+            <Info size={22} className="shrink-0 text-[#0050cb]" />
+            <div>
+              <p className="text-[12px] font-bold leading-4 tracking-[0.24px] text-[#191c1e]">Pro Tip</p>
+              <p className="text-[14px] leading-5 text-[#424656]">
+                Use the <code className="rounded bg-[#e1e2e4] px-1.5 py-0.5 font-mono text-[#424656]">onLoad</code> callback to trigger custom events in your CRM when a user starts a tour.
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section className="rounded-2xl bg-[#0066ff] p-12 text-center text-white">
+        <h2 className="text-[24px] font-semibold leading-8 tracking-[-0.24px]">Need help with your integration?</h2>
+        <p className="mx-auto mt-2 max-w-[672px] text-[16px] leading-6 text-white/80">
+          Our dedicated solutions engineering team is available to assist with complex implementations, custom styling, or platform migration.
+        </p>
+        <div className="mt-6 flex justify-center gap-4">
+          <button className="flex items-center gap-2 rounded-lg bg-white px-8 py-3 text-[16px] font-bold leading-6 text-[#0050cb] shadow-lg">
+            <Mail size={18} />
+            Contact Support
+          </button>
+          <button className="flex items-center gap-2 rounded-lg border border-white/30 bg-[#0050cb] px-8 py-3 text-[16px] font-bold leading-6 text-white">
+            Book a Demo
+            <ExternalLink size={18} />
+          </button>
+        </div>
+      </section>
+    </div>
+  );
 }
