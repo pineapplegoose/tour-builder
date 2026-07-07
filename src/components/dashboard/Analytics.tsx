@@ -5,6 +5,7 @@ import { BarChart3, Calendar, Download, Flag, Loader, TrendingDown, TrendingUp, 
 import { api } from "../../../convex/_generated/api";
 import { useAuth } from "../../lib/AuthContext";
 import { Id } from "../../../convex/_generated/dataModel";
+import { useRouter } from "next/navigation";
 
 type Tour = {
   _id: Id<"tours">;
@@ -67,6 +68,7 @@ export default function AnalyticsView() {
   const { user } = useAuth();
   const tours = useQuery(api.tour.getTours) as Tour[] | undefined;
   const allAnalytics = useQuery(api.analytics.getAllToursAnalytics, user ? { userId: user.userId } : "skip");
+  const router = useRouter();
 
   if (!tours || !allAnalytics) {
     return (
@@ -106,7 +108,7 @@ export default function AnalyticsView() {
         <article className="overflow-hidden rounded-xl border border-[#fbfbfb] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.03)]">
           <div className="flex items-center justify-between border-b border-[#c2c6d8] px-6 py-5">
             <h2 className="text-[18px] font-semibold leading-7 text-[#191c1e]">Tour Performance</h2>
-            <button className="text-[14px] font-medium leading-5 text-[#0050cb]">See All</button>
+            <button onClick={() => router.push("/dashboard")} className="text-[14px] cursor-pointer font-medium leading-5 text-[#0050cb]">See All</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] text-left">
@@ -192,7 +194,7 @@ export default function AnalyticsView() {
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <h2 className="text-[18px] font-bold leading-7 text-[#0050cb]">Optimization Insight</h2>
-              <span className="rounded bg-[#0050cb1a] px-2 py-0.5 text-[12px] font-semibold uppercase leading-4 tracking-[0.24px] text-[#0050cb]">Critical</span>
+              <span className="rounded bg-red-100 px-2 py-0.5 text-[12px] font-semibold uppercase leading-4 tracking-[0.24px] text-red-500">Critical</span>
             </div>
             <p className="mt-1 max-w-[760px] text-[14px] leading-[22.75px] text-[#424656]">
               Mobile users show <strong className="text-[#191c1e]">15% higher drop-off</strong> at <u>Step 4 (Permission Grant)</u> than desktop peers. This likely indicates an issue with responsive button placement or mobile-specific permission prompts.

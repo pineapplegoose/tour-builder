@@ -33,8 +33,8 @@ function StepIcon({ index }: { index: number }) {
   const icons = [GripVertical, Info, Send, Crosshair];
   const Icon = icons[index % icons.length];
   return (
-    <span className="flex size-12 items-center justify-center rounded-lg border border-[#c2c6d84d]" style={{ backgroundColor: colors[index % colors.length] }}>
-      <Icon size={20} className="text-[#001543]" />
+    <span className="flex size-10 items-center justify-center rounded-lg border border-[#c2c6d84d]" style={{ backgroundColor: colors[index % colors.length] }}>
+      <Icon size={15} className="text-[#001543]" />
     </span>
   );
 }
@@ -228,7 +228,7 @@ export default function StepEditor({ tourId, onBack }: StepEditorProps) {
               <button
                 type="button"
                 onClick={() => deleteStep({ id: step._id })}
-                className="rounded-lg p-2 text-[#424656] opacity-0 transition hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
+                className="rounded-lg p-2 text-[#424656] cursor-pointer opacity-0 transition hover:bg-red-50 hover:text-red-600 group-hover:opacity-100"
                 aria-label={`Delete ${step.title}`}
               >
                 <Trash2 size={16} />
@@ -238,7 +238,7 @@ export default function StepEditor({ tourId, onBack }: StepEditorProps) {
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="flex min-h-20 flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#c2c6d8] p-[26px] text-center transition hover:border-[#0050cb] hover:bg-[#eef4ff]"
+            className="flex min-h-20 cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#c2c6d8] p-[26px] text-center transition hover:border-[#0050cb] hover:bg-[#eef4ff]"
           >
             <Plus size={28} className="text-[#424656]" />
             <span className="text-[12px] font-bold uppercase leading-4 tracking-[0.6px] text-[#424656]">Add New Step</span>

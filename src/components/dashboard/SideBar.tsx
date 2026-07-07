@@ -40,7 +40,7 @@ export default function Sidebar({ currentView, onViewChange, onCreateTour }: Sid
                 key={item.id}
                 type="button"
                 onClick={() => onViewChange(item.id)}
-                className={`flex h-[38px] w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-[14px] font-medium leading-4 tracking-[0.24px] transition ${active ? "text-[#0050cb]" : "text-[#424656] hover:bg-white/70 hover:text-[#0050cb]"
+                className={`flex h-[38px] w-full items-center gap-3 rounded-lg px-4 py-2.5 text-left text-[14px] font-medium leading-4 tracking-[0.24px] transition ${active ? "text-[#0050cb]" : "text-[#424656] hover:bg-white/70 hover:text-[#0050cb] hover:shadow-sm cursor-pointer"
                   }`}
               >
                 <Icon size={18} />

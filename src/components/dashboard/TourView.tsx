@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { ArrowRight, Calendar, ChevronDown, Filter, Grid2X2, Loader, Plus, Rocket, Users, WalletCards, X } from "lucide-react";
+import { ArrowRight, Calendar, ChevronDown, Grid2X2, Loader, Plus, Rocket, Users, WalletCards, X } from "lucide-react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
 
@@ -42,7 +42,7 @@ function StatusPill({ active }: { active: boolean }) {
 function TourCard({ tour, index, onSelectTour }: { tour: Tour; index: number; onSelectTour: (tourId: Id<"tours">) => void }) {
   const Icon = icons[index % icons.length];
   return (
-    <article onClick={() => onSelectTour(tour._id)} className="min-h-[318px]  cursor-pointer rounded-xl border border-[#fbfbfb] bg-white p-[25px] shadow-[0_4px_12px_rgba(0,0,0,0.03)]">
+    <article onClick={() => onSelectTour(tour._id)} className="min-h-[318px] cursor-pointer  rounded-xl border border-[#fbfbfb] hover:bg-[#fbfbfb] bg-white p-[25px] shadow-[0_4px_12px_rgba(0,0,0,0.03)]">
       <div className="mb-4 flex items-start justify-between">
         <span className="flex size-12 items-center justify-center rounded-lg bg-[#d0e1fb] text-[#0050cb]">
           <Icon size={21} />
@@ -86,7 +86,7 @@ function CreateTourCard({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="flex min-h-80 flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#c2c6d8] bg-[#f2f4f6] px-[50px] py-[62px] text-center transition hover:border-[#0050cb] hover:bg-[#eef4ff]"
+      className="flex min-h-80 flex-col cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-[#c2c6d8] bg-[#f2f4f6] px-[50px] py-[62px] text-center transition hover:border-[#0050cb] hover:bg-[#eef4ff]"
     >
       <span className="flex size-16 items-center justify-center rounded-full bg-[#e7e8ea] text-[#424656]">
         <Plus size={24} />
@@ -123,10 +123,10 @@ function CreateTourDialog({ open, onClose }: { open: boolean; onClose: () => voi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#001543]/30 p-6 backdrop-blur-sm">
-      <form onSubmit={handleSubmit} className="w-full max-w-lg rounded-2xl border border-[#c2c6d8] bg-white p-6 shadow-2xl">
+      <form onSubmit={handleSubmit} className="w-full max-w-lg z-30 rounded-2xl border border-[#c2c6d8] bg-white p-6 shadow-2xl">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-[24px] font-semibold leading-8 tracking-[-0.24px] text-[#191c1e]">Create New Tour</h2>
-          <button type="button" onClick={onClose} className="rounded-full p-2 text-[#191c1e] hover:bg-[#f2f4f6]" aria-label="Close">
+          <button type="button" onClick={onClose} className="rounded-full cursor-pointer p-2 text-[#191c1e] hover:bg-[#f2f4f6]" aria-label="Close">
             <X size={18} />
           </button>
         </div>
@@ -150,10 +150,10 @@ function CreateTourDialog({ open, onClose }: { open: boolean; onClose: () => voi
           />
         </label>
         <div className="mt-6 flex gap-3 border-t border-[#c2c6d8] pt-6">
-          <button type="button" onClick={onClose} className="flex-1 rounded-lg border border-[#c2c6d8] px-4 py-3 text-[12px] font-medium tracking-[0.24px] text-[#191c1e]">
+          <button type="button" onClick={onClose} className="flex-1 rounded-lg cursor-pointer border border-[#c2c6d8] px-4 py-3 text-[12px] font-medium tracking-[0.24px] text-[#191c1e]">
             Cancel
           </button>
-          <button type="submit" disabled={saving} className="flex-1 rounded-lg bg-[#0050cb] px-4 py-3 text-[12px] font-medium tracking-[0.24px] text-white disabled:opacity-60">
+          <button type="submit" disabled={saving} className="flex-1 rounded-lg cursor-pointer bg-[#0050cb] px-4 py-3 text-[12px] font-medium tracking-[0.24px] text-white disabled:opacity-60">
             {saving ? "Creating..." : "Create Tour"}
           </button>
         </div>
